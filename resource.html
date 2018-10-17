@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>資源推薦</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <header id="header">
+      <div class="container">
+        <nav>
+
+
+          <ul class="nav">
+            <li><a href="index.html">報告主頁</a></li>
+            <li><a href="system.html">精準行銷</a></li>
+            <li><a href="resource.html">資源推薦</a></li>
+            <li><a href="statistic.html">敘述統計</a></li>
+            <li><a href="aboutus.html">關於團隊</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <section class="home_bg">
+    <div class="container_table">
+      <div class="container_table_cell">
+        <h2>手機遊戲玩家的消費金額預測與行為分析-以Brutal Age為例</h2>
+
+      </div>
+    </div>
+    <div class="resourcesystem">
+        <h1>產品關聯推薦系統</h1>
+        <p>持續推薦資源以提升玩家遊戲黏著度</p>
+        <hr>
+        <h1>下拉式選單系統</h1>
+        <hr>
+      <div class="resourceform">
+        <div class="formdis1">
+        <p>表格名稱</p>
+        <form>
+          <select name="resource1">
+      　  <option value="recourcea">recourceA</option>
+      　  <option value="recourceb">recourceB</option>
+          </select>
+        </form>
+        </div>
+        <div class="formdis1">
+        <p>表格名稱</p>
+        <form>
+          <select name="resource1">
+      　  <option value="recourcea">recourceA</option>
+      　  <option value="recourceb">recourceB</option>
+          </select>
+        </form>
+        </div>
+        <div class="formdis1">
+        <p>表格名稱</p>
+        <form>
+          <select name="resource1">
+      　  <option value="recourcea">recourceA</option>
+      　  <option value="recourceb">recourceB</option>
+          </select>
+        </form>
+        </div>
+        <div class="formdis2">
+        <p>表格名稱</p>
+        <form>
+        <select name="resource1">
+      　<option value="recourcea">recourceA</option>
+      　<option value="recourceb">recourceB</option>
+        </select>
+        </form>
+        </div>
+
+        <div class="formbutton">
+        <input type="button" value="我是按鈕">
+        </div>
+      </div>
+    </div>
+<!--D3JS-->
+<div class="">
+<script src="http://d3js.org/d3.v3.min.js"></script>
+  <script>
+
+// http://blog.thomsonreuters.com/index.php/mobile-patent-suits-graphic-of-the-day/
+var links = [
+  {source: "Microsoft", target: "Amazon", type: "licensing"},
+  {source: "Microsoft", target: "HTC", type: "licensing"},
+  {source: "Samsung", target: "Apple", type: "suit"},
+  {source: "Motorola", target: "Apple", type: "suit"},
+  {source: "Nokia", target: "Apple", type: "resolved"},
+  {source: "HTC", target: "Apple", type: "suit"},
+  {source: "Kodak", target: "Apple", type: "suit"},
+  {source: "Microsoft", target: "Barnes & Noble", type: "suit"},
+
+
+];
+
+var nodes = {};
+
+// Compute the distinct nodes from the links.
+links.forEach(function(link) {
+  link.source = nodes[link.source] || (nodes[link.source] = {name: link.source});
+  link.target = nodes[link.target] || (nodes[link.target] = {name: link.target});
+});
+
+var width = 500,
+    height =300;
+
+var force = d3.layout.force()
+    .nodes(d3.values(nodes))
+    .links(links)
+    .size([width, height])
+    .linkDistance(60)
+    .charge(-300)
+    .on("tick", tick)
+    .start();
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+// Per-type markers, as they don't inherit styles.
+svg.append("defs").selectAll("marker")
+    .data(["suit", "licensing", "resolved"])
+  .enter().append("marker")
+    .attr("id", function(d) { return d; })
+    .attr("viewBox", "0 -5 10 10")
+    .attr("refX", 15)
+    .attr("refY", -1.5)
+    .attr("markerWidth", 6)
+    .attr("markerHeight", 6)
+    .attr("orient", "auto")
+  .append("path")
+    .attr("d", "M0,-5L10,0L0,5");
+
+var path = svg.append("g").selectAll("path")
+    .data(force.links())
+  .enter().append("path")
+    .attr("class", function(d) { return "link " + d.type; })
+    .attr("marker-end", function(d) { return "url(#" + d.type + ")"; });
+
+var circle = svg.append("g").selectAll("circle")
+    .data(force.nodes())
+  .enter().append("circle")
+    .attr("r", 6)
+    .call(force.drag);
+
+var text = svg.append("g").selectAll("text")
+    .data(force.nodes())
+  .enter().append("text")
+    .attr("x", 8)
+    .attr("y", ".31em")
+    .text(function(d) { return d.name; });
+
+// Use elliptical arc path segments to doubly-encode directionality.
+function tick() {
+  path.attr("d", linkArc);
+  circle.attr("transform", transform);
+  text.attr("transform", transform);
+}
+
+function linkArc(d) {
+  var dx = d.target.x - d.source.x,
+      dy = d.target.y - d.source.y,
+      dr = Math.sqrt(dx * dx + dy * dy);
+  return "M" + d.source.x + "," + d.source.y + "A" + dr + "," + dr + " 0 0,1 " + d.target.x + "," + d.target.y;
+}
+
+function transform(d) {
+  return "translate(" + d.x + "," + d.y + ")";
+}
+
+  </script>
+</div>
+
+</body>
+</html>
